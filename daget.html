@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Penghasil Saldo Dana</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 20px;
+            color: #fff;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #fff;
+        }
+        .notification-bar {
+            background-color: rgba(251, 233, 231, 0.8);
+            color: #d32f2f;
+            padding: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .notification-text-wrapper {
+            white-space: nowrap;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            padding-right: 10px;
+            animation: slideLeft 20s linear infinite;
+        }
+        @keyframes slideLeft {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+        .section {
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            background-color: #333;
+            color: #fff;
+        }
+        .step-container {
+            margin-bottom: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .step-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .step {
+            padding: 20px;
+            position: relative;
+            margin-left: 0;
+            background: linear-gradient(to bottom, #ffb300, #ffe082);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .coin-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .coin-amount-container {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6f00;
+        }
+        .withdraw-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        .withdraw-amount {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4caf50;
+        }
+        .conversion-rate {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .speed-man-button {
+            background-color: #2196f3;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .speed-man-button:hover {
+            background-color: #1976d2;
+        }
+        .additional-info {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .blinking {
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0.7; }
+        }
+        .withdraw-box {
+            background-color: rgba(0, 123, 255, 0.15); /* Biru transparan */
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        .withdraw-box h2 {
+            text-align: left; /* Teks rata kiri */
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #fff;
+            padding-left: 20px; /* Beri ruang untuk bullet */
+            position: relative; /* Untuk posisi absolute bullet */
+        }
+        .withdraw-box h2::before {
+            content: "\2022"; /* Kode Unicode untuk bullet point */
+            color: #fff;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .withdraw-box .event-text {
+            color: #eee;
+            line-height: 1.6;
+            padding-left: 20px; /* Beri ruang untuk bullet */
+            position: relative; /* Untuk posisi absolute bullet */
+            margin-bottom: 10px;
+        }
+        .withdraw-box .event-text::before {
+            content: "\2022"; /* Kode Unicode untuk bullet point */
+            color: #eee;
+            font-size: 1em;
+            position: absolute;
+            left: 0;
+            top: 0.3em; /* Sesuaikan posisi vertikal bullet */
+        }
+        .withdraw-box .claim-button, .withdraw-box .install-button {
+            background-color: #28a745; /* Warna hijau untuk tombol klaim */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px; /* Beri jarak antar tombol */
+            font-size: 1em;
+        }
+        .withdraw-box .install-button {
+            background-color: #007bff; /* Warna biru untuk tombol pasang */
+        }
+        .rules-summary {
+            background-color: rgba(0, 131, 139, 0.15);
+            border: 1px solid rgba(0, 131, 139, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 400px;
+            color: #80cbc4;
+        }
+        .rules-summary h2 {
+            text-align: left;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .rules-summary ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .rules-summary li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-bar">
+        <div class="notification-text-wrapper">
+            Selamat! Siti telah berhasil menarik saldo dana Rp 4.500 |
+            Selamat! Budi telah berhasil menarik saldo dana Rp 3.200 |
+            Selamat! Ayu telah berhasil menarik saldo dana Rp 1.800 |
+            Selamat! Doni telah berhasil menarik saldo dana Rp 4.900 |
+            Selamat! Rina telah berhasil menarik saldo dana Rp 2.700 |
+            Selamat! Fajar telah berhasil menarik saldo dana Rp 3.800 |
+            Selamat! Maya telah berhasil menarik saldo dana Rp 1.500 |
+            Selamat! Kevin telah berhasil menarik saldo dana Rp 4.100 |
+            Selamat! Luna telah berhasil menarik saldo dana Rp 2.300 |
+            Selamat! Arya telah berhasil menarik saldo dana Rp 3.500 |
+        </div>
+    </div>
+
+    <div>
+        <h2>EVENT NARA ZAEN</h2>
+        <div>
+Hi, apa kabar semuanya? Masih semangat kan puasanya? Tinggal 1 hari lagi loh? Oiya aku punya rekomendasi game nih untuk kamu menambah saldo dana, dan aku akan memberi mu tambahan saldo dana dengan aturan dari NARA :</p>
+            <p class="event-text">klik tombol di bawah, lalu klik tombol PASANG</p>
+            <p class="event-text">80p jika main hingga lvl 5</p>
+            <p class="event-text">160p jika main hingga lvl 20</p>
+            <p class="event-text">240p jika main hingga lvl 50</p>
+            <p class="event-text">dan 400p jika main hingga lvl 80</p>
+kamu mendownload game dengan klik tombol KLAIM DAGET selanjunya klik tombol  PASANG, PASTIKAN main hingga level 5 , wah untuk capai level 5 itu hanya butuh 2 menit saja kok. Yuk gaskeun🥳</p>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="step-container show">
+            <div class="step">
+                <div class="coin-info">
+                    Koin saya: <div class="coin-amount-container"><span id="coinAmount">0</span></div>
+                </div>
+                <div class="withdraw-info">
+                    Dapat ditarik
+                    <div class="withdraw-amount">Rp<span id="withdrawAmount">0</span></div>
+                    <div class="conversion-rate">Rp 10 Koin = Rp 10 Saldo</div>
+                </div>
+                <a id="speedManButton" href="https://d3n41clgby0upi.cloudfront.net/sp/index_1.html?id=20579107" class="speed-man-button" target="_blank">
+                    KLAIM DAGET
+                </a>
+                <p class="additional-info">
+                    Semakin awal Anda datang, semakin banyak yang bisa Anda hasilkan. Masukkan ID ini <strong>20579107</strong> untuk menerima manfaat Rp16K.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="rules-summary">
+        <h2>Kesimpulan Aturan Penarikan</h2>
+        <ul>
+            <li>Setiap penarikan akan mengurangi seluruh saldo yang ada.</li>
+            <li>Waktu kedatangan dana berkisar antara 1 menit hingga 24 jam, dengan potensi penyelesaian masalah hingga 3 hari kerja.</li>
+            <li>Anda hanya diperbolehkan melakukan penarikan maksimal 1 kali dalam sehari.</li>
+            <li>Terdapat batasan minimum jumlah penarikan sesuai dengan ketentuan platform. Jika saldo tidak mencukupi, coba metode penarikan lain. 
+<li>Aku lagi sebar DANA Kaget nih! Yuk, sikat segera sebelum melayang 
+
+                <a id="speedManButton" href="https://link.dana.id/danakaget?c=sefee7e7j&r=cAYM8h&orderId=20250330101214007715010300166998215216583" target="_blank">
+                    DANA KAGET
+                </a>            
+            💸💸💸</li>
+        </ul>
+    </div>
+
+    <script>
+        const coinAmountSpan = document.getElementById('coinAmount');
+        const withdrawAmountSpan = document.getElementById('withdrawAmount');
+        const speedManButton = document.getElementById('speedManButton');
+        let currentCoin = 0;
+        const targetCoin = 16000;
+        const animationDuration = 100000; // Durasi animasi dalam milidetik (5 detik)
+        const increment = Math.ceil(targetCoin / (animationDuration / 30)); // Hitung kenaikan per frame
+
+        function animateCoin() {
+            if (currentCoin < targetCoin) {
+                currentCoin += increment;
+                if (currentCoin > targetCoin) {
+                    currentCoin = targetCoin;
+                }
+                coinAmountSpan.textContent = currentCoin.toLocaleString('id-ID');
+                withdrawAmountSpan.textContent = currentCoin.toLocaleString('id-ID');
+                requestAnimationFrame(animateCoin);
+            } else {
+                // Setelah mencapai target, tambahkan kelas berkedip ke tombol
+                speedManButton.classList.add('blinking');
+            }
+        }
+
+        // Mulai animasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', animateCoin);
+
+        // Efek scroll (tetap ada jika Anda punya banyak bagian)
+        function checkSlide() {
+            const stepContainers = document.querySelectorAll('.step-container');
+
+            stepContainers.forEach(container => {
+                const slideInAt = (window.scrollY + window.innerHeight) - container.offsetHeight / 2;
+                const isHalfShown = slideInAt > container.offsetTop;
+                const isNotScrolledPast = window.scrollY < (container.offsetTop + container.offsetHeight);
+
+                if (isHalfShown && isNotScrolledPast) {
+                    container.classList.add('show');
+                } else {
+                    container.classList.remove('show');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkSlide);
+        // checkSlide();
+    </script>
+
+</body>
+</html>
