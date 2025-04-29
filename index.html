@@ -1,205 +1,492 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nara zaen</title>
+    <meta charset='UTF-8'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5'/>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+    <link rel="icon" type="image/svg+xml" href="https://feeldreams.github.io/main-icon.png">
+    <link rel="apple-touch-icon" href="https://feeldreams.github.io/main-icon.png">
+    <script src="https://htmlku.com/sekarangkamu/script2.js"></script>
+    <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+    <link rel="stylesheet" href="https://naraanimation.github.io/NaraAnimations/Nara.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <title>Jangan Lupa Subuhan - Script HTML feeldream.id</title>
+    <meta name="description" content="Script by Feeldream.id">
     <style>
-        body {
+        .sembunyi {
+            display: none;
+        }
+        .scaleUp {
+            transform: scale(1);
+            opacity: 1;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .scaleIn {
+            transform: scale(1);
+            opacity: 1;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .transition {
+            transition: all 0.5s ease-in-out;
+        }
+        .scale0 {
+            transform: scale(0);
+            opacity: 0;
+        }
+        .itim {
+            font-style: italic;
+        }
+        .med {
+            font-size: 1.5em;
+        }
+        .text-xl {
+            font-size: 1.25em;
+        }
+        .putihmerah {
+            color: red;
+        }
+        .blocktext {
+            overflow-y: auto;
+            max-height: 300px; /* Atur tinggi maksimal sesuai kebutuhan */
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5); /* Contoh background semi-transparan */
+            border-radius: 5px;
+        }
+        .menu {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Align items to the top to see everything */
-            min-height: 100vh;
-            background-color: #2c3e50;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            color: white;
-        }
-        #game-title {
-            color: #f39c12;
-            font-size: 2em; /* Ukuran judul diperkecil */
-            margin-bottom: 20px; /* Margin diperkecil */
-            text-align: center;
-        }
-        #game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 65px); /* Ukuran kartu diperkecil */
-            grid-gap: 10px; /* Jarak antar kartu diperkecil */
-            margin-bottom: 20px; /* Margin diperkecil */
-            background-color: #34495e;
-            padding: 15px; /* Padding diperkecil */
-            border-radius: 10px; /* Radius diperkecil */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Bayangan diperkecil */
-        }
-        .card {
-            width: 100%;
-            height: 65px; /* Sesuai dengan ukuran grid */
-            background-color: #333; /* Warna awal hitam */
-            border-radius: 8px; /* Radius diperkecil */
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em; /* Ukuran emoji diperkecil */
-            color: transparent;
-            transition: transform 0.3s, background-color 0.3s, color 0.3s;
-            transform-style: preserve-3d;
-        }
-        .card.flipped {
-            background-color: #e67e22; /* Warna saat kartu dibuka */
-            color: white;
-            transform: rotateY(180deg);
-        }
-        .card.matched {
-            background-color: #2ecc71;
-            cursor: default;
-            opacity: 0.8;
-        }
-        #score {
-            font-size: 1.2em; /* Ukuran skor diperkecil */
-            margin-bottom: 15px; /* Margin diperkecil */
-            color: #ecf0f1;
-            text-align: center;
-        }
-        button {
-            padding: 8px 15px; /* Padding diperkecil */
-            font-size: 0.9em; /* Ukuran font tombol diperkecil */
-            background-color: #3498db;
-            border: none;
-            color: white;
-            border-radius: 5px; /* Radius diperkecil */
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        #link-button {
-            display: none;
-            margin-top: 20px; /* Margin diperkecil */
-            text-align: center;
-        }
-        #link-button button {
-            background-color: #1abc9c;
-            padding: 8px 15px; /* Padding diperkecil */
-            font-size: 0.9em; /* Ukuran font tombol klaim diperkecil */
-            border-radius: 5px; /* Radius diperkecil */
-        }
-        #link-button button:hover {
-            background-color: #16a085;
-        }
-        #link-button a {
-            text-decoration: none;
-            color: white;
-        }
-        #warning-text {
-            color: white; /* Warna teks menjadi putih */
-            font-size: 1.1em;
+            gap: 10px;
             margin-top: 20px;
-            text-align: center;
-            /* animation: blinker 1s linear infinite; Hapus animasi kedip */
         }
-        /* @keyframes blinker {
-            50% {
+        .tombol {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        #svgheart {
+            width: 50px;
+            height: 50px;
+            fill: red;
+            transition: transform 0.3s ease-in-out;
+        }
+        #svgheart:hover {
+            transform: scale(1.2);
+        }
+        .lovein svg {
+            animation: none;
+            stroke: #ff0000;
+            stroke-width: 1.3;
+            fill: none;
+            width: 35px;
+            height: 35px;
+        }
+        .wp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .wp img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .stiker {
+            position: absolute;
+            /* Atur posisi stiker sesuai kebutuhan */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        .heart-icon {
+            position: fixed;
+            color: red;
+            font-size: 1em;
+            animation: heartFall linear infinite;
+            top: -10vh;
+            z-index: -1;
+        }
+        @keyframes heartFall {
+            to {
+                transform: translateY(110vh);
                 opacity: 0;
             }
-        } */
+        }
+        #Tombol {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        #Tombol a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Warna Hijau untuk "Mau" */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease-in-out;
+        }
+        #Tombol a:hover {
+            background-color: #45a049;
+        }
+        #tolakteks {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: scale(1);
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .loading-message {
+            margin-bottom: 20px;
+        }
+        .blocklove {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #ket {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        #lihatsc {
+            margin-top: 20px;
+            text-decoration: none;
+            color: yellow;
+            font-size: 1em;
+        }
+        #danaKagetButton {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            margin-top: 20px;
+        }
+        #linkDanaKaget {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease-in-out;
+        }
+        #linkDanaKaget:hover {
+            background-color: #0080ff;
+        }
     </style>
 </head>
 <body>
-    <h1 id="game-title">Rama Games</h1>
-    <div id="game-board"></div>
-    <div id="score">Score: 0</div>
-    <button onclick="resetGame()">ULANGI GAME</button>
-    <div id="link-button">
-        <button id="claim-button">KLAIM DANA KAGET</button>
+
+   <div class="overlay">
+    <div class="loading-message">Hai kamu!<br>Tunggu dulu ya..</div>
+     <div id="loveIn" class="blocklove">
+        <a href="https://www.feeldream.id/2023/01/script-feeldream.html?m=1#punyasesuatu" target="_blank" class="lovein">
+            <svg class='line' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+                <g transform='translate(2.550170, 3.550158)'>
+                    <path d='M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.54614246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z'></path>
+                    <path d='M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842'></path>
+                </g>
+            </svg>
+        </a>
+        <p id="ket">Sentuh LOVEnya!</p>
+     </div>
+     <a id="lihatsc" style="font-size:1em;color:yellow" href="#"></a>
+   </div>
+   <audio src="https://feeldreams.github.io/audio/melody.mp3" id="linkmp3" class="sembunyi"></audio>
+
+  <section class="first" id="inisection">
+       <div class="wp"><img src="https://feeldreams.github.io/wp11.jpg" alt="Background 1"/></div>
+       <div id="first_stiker" class="stiker">
+        <img id="inistiker1" src="https://htmlku.com/0/panda/pusn.gif" alt="Stiker 1"/>
+        <img id="inistiker2" class="sembunyi" src="https://htmlku.com/0/panda/cilukba.gif" alt="Stiker 2"/>
+       </div>
+
+       <h1 id="teks1" class="scaleUp itim">Assalamualaikum!</h1>
+       <p id="teks3" class="scaleIn itim transition" style="font-size:1em">Udah bangun belum?<br>Jangan lupa Subuhan yaaa<br><br><span class="text-xl">😊</span></p>
+       <h1 id="teks2" class="sembunyi">Pak Kumis Bawa Paku..</h1>
+
+       <div id="sentuh" class="menu">
+        <a class='tombol' onclick="tes()">
+          <svg id="svgheart" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+              <g transform='translate(2.550170, 3.550158)'>
+                  <path d='M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.54614246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z'></path>
+                  <path d='M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842'></path>
+              </g>
+          </svg>
+        </a>
+        <svg class='line sembunyi' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g transform='translate(5.000000, 8.500000)'><path d='M14,0 C14,0 9.856,7 7,7 C4.145,7 0,0 0,0' ></path></g></svg>
+       </div>
+  </section>
+
+  <section>
+      <div class="wp"><img src="https://htmlku.com/hitungan/pict.jpg" alt="Background 2"/></div>
+      <div class="stiker" style="margin-top:0;transform:scale(0)" id="second_stiker">
+        <img id="inistiker3" src="https://htmlku.com/0/panda/ketawa2.gif" alt="Stiker 3"/>
+        <img id="inistiker4" class="sembunyi" src="https://htmlku.com/0/panda/ledekin.gif" alt="Stiker 4"/>
+      </div>
+
+      <h1 id="textsec2first" class="scaleUp itim med">Udah siap Subuhan?<br>Mau aku temenin? 🫣</h1>
+      <p id="tolakteks" class="itim">Jangan sampai kelewatan ya! 😝</p>
+      <div id="Tombol">
+        <a id="By" onClick="fungsimau()">💌 Mau</a>
+        <a id="Bn" onClick="btn='Bn';fungsibaru(btn)">Nanti Dulu</a>
+      </div>
+  </section>
+  <section>
+    <div class="wp"><img src="https://i.ibb.co.com/Lkk2d3q/94907a80790d230452e92245b2041f1a.jpg" alt="Background 3"/></div>
+    <div class="stiker" style="margin-top:0;transform:scale(0)" id="third_stiker">
+      <img id="inistiker5" src="https://htmlku.com/0/panda/panah.gif" alt="Stiker 5"/>
+      <img id="inistiker6" class="sembunyi" src="https://htmlku.com/0/panda/muah.gif" alt="Stiker 6"/>
     </div>
-    <div id="warning-text">⚠️ PERHATIAN : Menangkan game dan dapatkan DANA KAGET</div>
-    <script>
-        const emojis = ['🎮', '🎲', '🎯', '🎳', '🏓', '🏸', '🥊', '🎣'];
-        const cards = [...emojis, ...emojis];
-        let flippedCards = [];
-        let matchedCards = 0;
-        let score = 0;
-        const totalPairs = emojis.length;
-        const linkButton = document.getElementById('link-button');
-        const scoreDisplay = document.getElementById('score');
-        const gameBoard = document.getElementById('game-board');
-        const claimButton = document.getElementById('claim-button');
-        const danaKagetLink = "https://link.dana.id/danakaget?c=sdwth4qtl&r=cAYM8h&orderId=20250411101214408515010300166998217304545";
-        const whatsappMessage = encodeURIComponent("Aku lagi sebar DANA Kaget nih! Yuk, sikat segera sebelum melayang 💸💸💸 " + danaKagetLink);
-        const phoneNumber = "6281268712898"; // Nomor WhatsApp tujuan (format internasional)
-        const whatsappLink = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
 
-        function initGame() {
-            gameBoard.innerHTML = '';
-            flippedCards = [];
-            matchedCards = 0;
-            score = 0;
-            scoreDisplay.textContent = `Score: ${score}`;
-            linkButton.style.display = 'none';
+    <div id="scroll-container" class="blocktext txt transition scale0">
+      <p id="textsec3" class="anm itim text-md"><b id="tekstolak">Jangan ditunda-tunda ya Subuhannya! 😉</b><b id="teksterima">Alhamdulillah! 🥰 Semoga ibadah kita diterima ya! 🤗</b><br><br>Semangat terus ya<br>ibadahnya hari ini! ✨<br><br>Sebagai penyemangat,<br>ada sedikit rezeki nih buat kamu 🫢<br><br>Semoga bermanfaat yaaa! 😊</p>
+    </div>
+    <div id="danaKagetButton" style="opacity: 0; transform: scale(0.8); transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; margin-top: 20px;">
+        <a id="linkDanaKaget" href="https://link.dana.id/danakaget?c=s2twuyyww&r=cAYM8h&orderId=20250430101214488715010300166998220313633" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #00bfff; color: white; text-decoration: none; border-radius: 5px; cursor: pointer; border: none; font-size: 1em; transition: background-color 0.3s ease-in-out;">🎁 DANA KAGET</a>
+    </div>
+  </section>
+<script>
+pesanwhatsapp = "";
 
-            cards.sort(() => Math.random() - 0.5);
+const body = document.querySelector("body"); audio = new Audio('' + linkmp3.src);
+/* START Hati Berjatuhan */
+function berjatuhan() {const heart = document.createElement("div");heart.innerHTML = "<svg class='line spin' style='opacity:.4;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g transform='translate(2.550170, 3.550158)'><path d='M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.54614246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z'></path><path d='M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842'></path></g></svg>";heart.className = "heart-icon";heart.style.left = (Math.random() * 95) + "vw";heart.style.animationDuration = (Math.random() * 3) + 2 + "s";document.body.appendChild(heart);}
+setInterval(function() {var heartArr = document.querySelectorAll(".heart-icon");if (heartArr.length > 100) {heartArr[0].remove();}}, 100);
+/* END Hati Berjatuhan */
+  initextsec2first = textsec2first.innerHTML;textsec2first.innerHTML="";
+  function mulaitextseco(){
+    new TypeIt("#textsec2first", {
+      strings: ["" + initextsec2first], startDelay: 50, speed: 30, /* deff 55 */ cursor: true,
+      afterComplete: function(){
+        textsec2first.innerHTML = initextsec2first;
+        setTimeout(function() {Tombol.style="opacity:1;transform: scale(1);";}, 200);
+      },
+    }).go();
+  }
+  function fungsimau(){
+    if(tolakTrue == false){
+        tekstolak.innerHTML = "";
+        initextsec3 = textsec3.innerHTML;
+    }
 
-            cards.forEach((emoji, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.dataset.value = emoji;
-                card.dataset.index = index;
-                card.innerHTML = emoji;
-                card.addEventListener('click', flipCard);
-                gameBoard.appendChild(card);
-            });
-        }
+    textsec3.innerHTML="";
+    window.scrollBy({top: tinggi,behavior: 'smooth'});
+    skrg++;
+    scrollContainer.style="transform: scale(1)";
+    setTimeout(function() {third_stiker.style="margin-top:0px;margin-bottom:15px;transform:scale(1);transition:all .9s ease"}, 500);
+    new TypeIt("#textsec3", {
+      strings: ["" + initextsec3], startDelay: 700, speed: 27, cursor: true,
+      afterComplete: function(){
+          textsec3.innerHTML = initextsec3;
+          third_stiker.style.transform = "scale(0)";
+          setTimeout(function() {
+              third_stiker.style.transform = "scale(1)";
+              inistiker5.src = inistiker6.src;
+          }, 300);
+          setInterval(berjatuhan,200);
+          clearInterval(scrollInterval);
 
-        function flipCard() {
-            if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
-                this.style.backgroundColor = '#e67e22';
-                this.classList.add('flipped');
-                flippedCards.push(this);
-                if (flippedCards.length === 2) {
-                    checkMatch();
-                }
-            }
-        }
+          // Tampilkan tombol DANA KAGET setelah 2 detik
+          setTimeout(function() {
+              document.getElementById("danaKagetButton").style.opacity = 1;
+              document.getElementById("danaKagetButton").style.transform = "scale(1)";
+          }, 2000);
+      },
+    }).go();
+  }
 
-        function checkMatch() {
-            const [card1, card2] = flippedCards;
+  fungsi=0;fungsiklik=0;skrg=1;iniaja=0;
+  function tes(){
+    sentuh.style="margin-top:100px;transform:scale(2.3)";
+    setTimeout(function() {
+          if(fungsi==0){
+            window.scrollBy({top: tinggi,behavior: 'smooth'});
+            fungsi = 1;skrg++;
+            if(skrg==2){fungsi=0;setTimeout(mulaitextseco,500);setTimeout(function() {second_stiker.style="margin-top:0px;transform:scale(.9);transition:all .7s ease";}, 500);}
+          }
+    }, 100);
+  }
+  function smn(){fungsi=0;initom.style="";}
+  function muncultombol(){fungtom=1;Tombol.style="opacity:1;transform:scale(1)";}
+  function muncultombol2(){Tombol2.style="opacity:1;transform:scale(1)";}
 
-            if (card1.dataset.value === card2.dataset.value) {
-                card1.classList.add('matched');
-                card2.classList.add('matched');
-                score += 10;
-                scoreDisplay.textContent = `Score: ${score}`;
-                matchedCards++;
-                if (matchedCards === totalPairs) {
-                    setTimeout(() => {
-                        linkButton.style.display = 'block';
-                    }, 750);
-                }
-            } else {
-                setTimeout(() => {
-                    card1.style.backgroundColor = '#333';
-                    card2.style.backgroundColor = '#333';
-                    card1.classList.remove('flipped');
-                    card2.classList.remove('flipped');
-                }, 1000);
-            }
-            flippedCards = [];
-        }
+function aksiakhir() {
+  if(fungsiklik==0){
+    fungsiklik=1;
+    setTimeout(katajudul,100)
+  }
+}
+function katajudul(){
+      new TypeIt("#judulakhir", {
+      strings: ["" + teksjudulakhir], startDelay: 50, speed: 50, cursor: true,
+      afterComplete: function(){
+          judulakhir.innerHTML = teksjudulakhir;
+          setTimeout(katakata,400);
+      },}).go();
+}
+function katakata(){
+      new TypeIt("#kalimatakhir", {
+      strings: ["" + tekskalimatakhir], startDelay: 50, speed: 48, cursor: true,
+      afterComplete: function(){
+          kalimatakhir.innerHTML = tekskalimatakhir;
+          //judulakhir.style="opacity:0;transform:scale(0);";
+          setTimeout(teksmuncul,20);
+          setInterval(berjatuhan,200);
+          setTimeout(kataakhir,700);
+      },}).go();
+}
+function teksmuncul(){
+    stikerakhir.style="opacity:0;transform:scale(0)";
+    setTimeout(gantifotoakhir,400);
+}
+function jjteksnim(){judulakhir.style.animation="rto .8s infinite alternate";}
+function gantifotoakhir(){stikerakhir.src=stikerakhir2.src;stikerakhir.style="";}
+function kataakhir(){
+      new TypeIt("#palingakhir", {
+      strings: ["" + tekspalingakhir], startDelay: 50, speed: 50, cursor: true,
+      afterComplete: function(){
+          palingakhir.innerHTML = tekspalingakhir;
+          setTimeout(muncultombol3,500);
+      },}).go();
+}
+function muncultombol3(){fungtom2=1;TombolWA.style="opacity:1;transform:scale(1)";}
+function menuju(){if(fungtom2==1){window.location = "https://api.whatsapp.com/send?phone=&text=" + pesanwhatsapp;}}
+tinggi = inisection.offsetHeight;
+function tentukantinggi(){tinggi = inisection.offsetHeight;}
+setInterval(tentukantinggi,200);
+console.log(tinggi);
+function keatas(){window.scrollTo(0, 0);}
+setTimeout(function(){
+  window.scrollTo(0, 0);
+  setTimeout(keatas,500);
 
-        function resetGame() {
-            initGame();
-        }
+  var overlay = document.querySelector(".loading-message");
+  overlay.style.display = "none";
+  var tomlv = document.querySelector(".blocklove");
+  tomlv.style.display = "flex";
+},700);
+first_stiker.style="transform: scale(0)";
+sentuh.style="transform: scale(0)";
+function showSentuh(){sentuh.style="transform: scale(1.2);";}
+vgantiTeks1 = 0;
+function gantiTeks1(){
+    if(vgantiTeks1 == 0){gantiFoto1();teks1.style="transform: scale(.3);transition:all .75s ease";teks3.style="transform: scale(0);";vgantiTeks1++;setTimeout(gantiTeks1,300);}
+    else {vgantiTeks1 = teks2.innerHTML;teks1.innerHTML = "";teks3.style="display:none";teks1.style="transform: scale(.9);transition:all .75s ease";gantiTeks1nimasi();}
+}
+function gantiFoto1(){
+    first_stiker.style="transform: scale(0);";
+    setTimeout(function() {
+        first_stiker.style.transform = "scale(1)";
+        inistiker1.src = inistiker2.src;
+    }, 300);
+}
+function gantiTeks1nimasi(){
+      new TypeIt("#teks1", {
+      strings: ["" + vgantiTeks1], startDelay: 10, speed: 35, cursor: true,
+      afterComplete: function(){
+          teks1.innerHTML = vgantiTeks1;
+          showSentuh();
+      },}).go();
+   }
+var sudahKlik = false;
+sudahKlik = true;
+document.getElementById('loveIn').innerHTML = '<style>.lovein svg{animation:none;stroke:#ff0000;stroke-width:1.3;fill:none;width:35px;height:35px}</style><label class="lovein"><svg class="line" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g transform="translate(2.550170, 3.550158)"><path d="M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.5414246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z"></path><path d="M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842"></path></g></svg></label><p id="ket">Sentuh LOVEnya!</p>';
+document.getElementById("loveIn").onclick = function() {
+    if (sudahKlik) {
+      audio.play();
+      lihatsc.style.display="none";
+      document.querySelector(".overlay").style.display = "none";
 
-        claimButton.addEventListener('click', () => {
-            window.open(whatsappLink, '_blank');
-        });
+      first_stiker.style="transform: scale(1)";
+      setTimeout(function() {teks3.style.transform = "scale(1)";}, 300);
+      setTimeout(gantiTeks1, 3000);
+      ScrollReveal({ reset: true });
+      ScrollReveal().reveal(".show-once", { reset: false});
+      ScrollReveal().reveal(".title", {delay: 20, duration: 1500,origin: "top",distance: "50px", easing: "cubic-bezier(0.5, 0, 0, 1)", rotate: { x: 20, z: -10 }});
+      ScrollReveal().reveal(".fade-in", {delay: 200, duration: 2400,move: 0});
+      ScrollReveal().reveal(".scaleUp", {delay: 100, duration: 1200, scale: .5, move: 0});
+      ScrollReveal().reveal(".flip", {delay: 200, duration: 2000, rotate: { x: 20, z: 20}});
+      ScrollReveal().reveal(".slide-right", {duration: 1000,origin: "left",distance: "300px",easing: "ease-in-out"});
+      ScrollReveal().reveal(".slide-up", {duration: 1000, origin: "bottom", distance: "100px", easing: "cubic-bezier(.37,.01,.74,1)", opacity: 0, scale: 0.5});
+    } else {
 
-        initGame();
-    </script>
+    }
+}
+  const scrollContainer = document.getElementById("scroll-container");
+  const textContainer = document.getElementById("textsec2");
+  function autoScroll() {scrollContainer.scrollTop += 10;}
+  const scrollInterval = setInterval(autoScroll, 50);
+  jumlahKlik = 0;sudah=false;let jumlahSkala = 1;tolakTrue=false
+  function fungsibaru(btn) {
+    if(jumlahKlik == 3){
+        teksterima.innerHTML = "";
+        initextsec3 = textsec3.innerHTML;
+        tolakTrue=true;
+        fungsimau();
+        jumlahKlik=0;
+    } else {
+
+    var tombol = document.getElementById("" + btn);
+    var tombolParent = tombol.parentNode;
+    var tombolPosisiX = Math.floor(Math.random() * 50) + 1;
+    var tombolPosisiY = Math.floor(Math.random() * 75) + 1;
+    var rotasiAcak = Math.floor(Math.random() * 360);
+    tombol.style.position = "relative";
+    tombol.style.left = tombolPosisiX + "px";
+    tombol.style.top = tombolPosisiY + "px";
+    tombol.style.transform = "rotate(" + rotasiAcak + "deg)";
+    tombolParent.appendChild(tombol);
+    // Perbesar tombol By
+      var tombolBy = document.getElementById("By");
+      tombolBy.style.transform = `scale(${1 + jumlahSkala * 0.2})`;
+
+      jumlahKlik++;
+      jumlahSkala++;
+    tolakteks.style="transform:scale(1)";
+    if(sudah==false){
+      sudah=true;
+      second_stiker.style.transform = "scale(0)";
+      setTimeout(function() {
+          second_stiker.style.transform = "scale(.9)";
+          inistiker3.src = inistiker4.src;
+      }, 300);
+    }
+    }
+  }
+</script>
 </body>
 </html>
+
+
